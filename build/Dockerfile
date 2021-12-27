@@ -1,11 +1,12 @@
 #--------- Generic stuff all our Dockerfiles should start with so we get caching ------------
 FROM tomcat:9.0-jre11-slim
-MAINTAINER thinkWhere<info@thinkwhere.com>
+MAINTAINER SteveTarter
+# Credit: thinkWhere<info@thinkwhere.com>
 # Credit: Tim Sutton<tim@linfiniti.com>
 # kartoza/docker-geoserver
 
 RUN apt-get -y update; apt-get -y install libapr1-dev \
-    libssl-dev wget zip curl xsltproc certbot cabextract
+    libssl-dev wget zip curl xsltproc certbot cabextract procps less
 
 RUN set -e \
     export DEBIAN_FRONTEND=noninteractive \
@@ -69,7 +70,7 @@ WORKDIR $CATALINA_HOME
 
 
 # Fetch the geoserver war file if it
-# is not available locally in the resources dir and
+# is not available locally in the resources dir and expand it
 RUN if [ ! -f /tmp/resources/geoserver.zip ]; then \
     wget --progress=bar -c http://downloads.sourceforge.net/project/geoserver/GeoServer/${GS_VERSION}/geoserver-${GS_VERSION}-war.zip \
       -O /tmp/resources/geoserver.zip; \
@@ -93,7 +94,15 @@ RUN if ls /tmp/resources/fonts/*.ttf > /dev/null 2>&1; then \
       cp -rf /tmp/resources/fonts/*.ttf /usr/share/fonts/truetype/; \
 	fi;
 
-# Copy across script and XML stylesheet which will allow the Tomcat server.xml to be parameterised
+# Replace Geoserver web.xml with a copy that enables CORS
+# FIXME - instead of copying an edited file, edit the existing in place
+RUN mv $CATALINA_HOME/webapps/geoserver/WEB-INF/web.xml $CATALINA_HOME/webapps/geoserver/WEB-INF/web.xml.orig
+RUN cp -p /tmp/resources/geoserver/web.xml $CATALINA_HOME/webapps/geoserver/WEB-INF/web.xml
+
+# The setenv.sh file is sourced before running Tomcat.  We're adding time support and setting the timezone.
+RUN cp /tmp/resources/tomcat/setenv.sh $CATALINA_HOME
+
+## Copy across script and XML stylesheet which will allow the Tomcat server.xml to be parameterised
 RUN cp /tmp/resources/tomcat/* $CATALINA_HOME/conf/
 
 # Delete resources after installation
