@@ -48,3 +48,5 @@ BUILD_TIMESTAMP=$(date +%Y%m%dT%H%M%S)
 #    GS_VERSION              - specifies which version of geoserver is to be built
 
 docker build --build-arg GS_VERSION=${GS_VERSION} --build-arg TOMCAT_EXTRAS=false --build-arg GDAL_NATIVE=true -t stevetarter/geoserver:${GS_VERSION}-${BUILD_TIMESTAMP} .
+
+docker push stevetarter/geoserver:${GS_VERSION}-${BUILD_TIMESTAMP}
