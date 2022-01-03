@@ -27,6 +27,6 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build the Docker image
-      run: ./build.sh
+      run: cd build && ./build.sh
     - name: Docker Push`
       run: docker push ${{secrets.DOCKERHUB_USERNAME}}/geoserver
