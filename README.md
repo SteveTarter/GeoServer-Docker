@@ -1,4 +1,4 @@
-# docker-geoserver
+# Geoserver-Docker
 
 A simple docker container that runs Geoserver influenced by this docker
 recipe: https://github.com/kartoza/docker-geoserver by Tim Sutton. Created with input from GeoSolutions.
