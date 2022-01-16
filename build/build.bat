@@ -10,7 +10,7 @@ rem Create plugins folder if does not exist
 if not exist .\resources\NUL mkdir .\resources
 if not exist .\resources\plugins\NUL mkdir .\resources\plugins
 
-SET plugins=control-flow,inspire,monitor,css,ysld,web-resource,sldservice,pyramid,gdal,importer
+SET plugins=control-flow,inspire,monitor,css,ysld,web-resource,sldservice,pyramid,gdal,importer,feature-pregeneralized
  
 rem Download plugins from list above.  Modify list as required
 rem works for windows 10 powershell
