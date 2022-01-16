@@ -18,7 +18,7 @@ GS_VERSION=2.19.4
 BUILD_GS_VERSION=${GS_VERSION:0:-2}
 
 # Add in selected plugins.  Comment out or modify as required
-plugins=(control-flow inspire monitor css ysld web-resource sldservice pyramid gdal importer )
+plugins=(control-flow inspire monitor css ysld web-resource sldservice pyramid gdal importer feature-pregeneralized)
 
 for p in "${plugins[@]}"
 do 
